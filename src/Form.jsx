@@ -1,34 +1,60 @@
 import { useState } from 'react'
-import { Button } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
-import { saveUser } from './features/users/userSlice'
+import { Button, Container } from 'react-bootstrap'
+import { addDoc, collection, getDocs } from 'firebase/firestore'
+import { db } from './firebase'
 
 export default function Form() {
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const dispatch = useDispatch()
+    const [users, setUsers] = useState([])
 
-    const handleSave = () => {
-        dispatch(saveUser({ username, password }))
-            .then(setUsername(""))
-            .then(setPassword(""))
+    const handleSave = async (e) => {
+        e.preventDefault()
+        try {
+            const docRef = await addDoc(collection(db, "users"), {
+                email: email,
+                password: password
+            });
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+        setEmail('')
+        setPassword('')
+    }
+
+    const handleShowUsers = async () => {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const docs = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        setUsers(docs)
     }
 
     return (
-        <div>
+        <Container>
+            <h1>User signup</h1>
             <Form>
-                <Form.Group className='mb-3' controlId='formBasicEmail'>
-                    <Form.Control onChange={(e) => setUsername(e.target.value)} type='email' placeholder='Enter email' />
+                <Form.Group className='mb-3' controlId='form'>
+                    <Form.Control onChange={(e) => setEmail(e.target.value)} type='email' placeholder='Enter email' value={email} />
+                    <Form.Control onChange={(e) => setPassword(e.target.value)} type='password' placeholder='Enter password' value={password} />
                 </Form.Group>
-
-                <Form.Group className='mb-3' controlId='formBasicPassword'>
-                    <Form.Control onChange={(e) => setPassword(e.target.value)} type='password' placeholder='Password' />
-                </Form.Group>
-                <Button className='rounded-pill' type='submit' onClick={handleSave}>
+                <Button className='rounded-pill mb-3' type='submit' onClick={handleSave}>
                     Submit
                 </Button>
             </Form>
-        </div>
+
+            <h3>Show users</h3>
+            <Button className='rounded-pill mb-3' onClick={handleShowUsers}>
+                Show
+            </Button>
+            {users.map((user) => {
+                <div key={user.id}>
+                    <p>Email: {user.email}</p>
+                    <p>Password: {user.password}</p>
+                </div>
+            })}
+        </Container>
     )
 }
-Form
