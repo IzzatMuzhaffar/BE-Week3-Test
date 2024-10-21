@@ -9,8 +9,9 @@ export default function App() {
             <AuthProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="form" element={<Form />} />
-                        <Route path="login" element={<AuthPage />} />
+                        <Route path="/form" element={<Form />} />
+                        <Route path="/login" element={<AuthPage />} />
+                        <Route path="*" element={<AuthPage />} />
                     </Routes>
                 </BrowserRouter>
             </AuthProvider>

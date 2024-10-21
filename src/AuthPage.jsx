@@ -12,7 +12,7 @@ export default function AuthPage() {
     const { currentUser } = useContext(AuthContext)
 
     useEffect(() => {
-        if (currentUser) navigate("/login")
+        if (currentUser) navigate("/form")
     }, [currentUser, navigate])
 
     const handleSignUp = async (e) => {
