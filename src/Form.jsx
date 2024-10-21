@@ -1,12 +1,24 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button, Container, Form } from 'react-bootstrap'
 import { addDoc, collection, getDocs } from 'firebase/firestore'
 import { db } from './firebase'
+import { getAuth } from 'firebase/auth'
+import { AuthContext } from './AuthProvider'
+import { useNavigate } from 'react-router-dom'
+
 
 export default function UserForm() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [users, setUsers] = useState([])
+
+    const auth = getAuth()
+    const navigate = useNavigate()
+    const { currentUser } = useContext(AuthContext)
+
+    if (!currentUser) {
+        navigate("/login")
+    }
 
     const handleSave = async (e) => {
         e.preventDefault()
