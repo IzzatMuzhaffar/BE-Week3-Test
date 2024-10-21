@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Button, Container } from 'react-bootstrap'
+import { Button, Container, Form } from 'react-bootstrap'
 import { addDoc, collection, getDocs } from 'firebase/firestore'
 import { db } from './firebase'
 
-export default function Form() {
+export default function UserForm() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [users, setUsers] = useState([])
@@ -49,12 +49,12 @@ export default function Form() {
             <Button className='rounded-pill mb-3' onClick={handleShowUsers}>
                 Show
             </Button>
-            {users.map((user) => {
+            {users.map((user) => (
                 <div key={user.id}>
                     <p>Email: {user.email}</p>
                     <p>Password: {user.password}</p>
                 </div>
-            })}
+            ))}
         </Container>
     )
 }
