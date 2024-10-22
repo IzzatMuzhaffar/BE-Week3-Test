@@ -44,9 +44,16 @@ export default function UserForm() {
         setUsers(docs)
     }
 
+    // added logout function
+    const handleLogout = () => {
+        auth.signOut()
+    }
+
     return (
         <Container>
-            <h1>User signup</h1>
+            <h1>hello</h1>
+            <Button className='rounded-pill mb-3' type='submit' onClick={handleLogout}>Log Out</Button>
+            {/* <h1>User signup</h1>
             <Form>
                 <Form.Group className='mb-3' controlId='form'>
                     <Form.Control onChange={(e) => setEmail(e.target.value)} type='email' placeholder='Enter email' value={email} />
@@ -66,7 +73,7 @@ export default function UserForm() {
                     <p>Email: {user.email}</p>
                     <p>Password: {user.password}</p>
                 </div>
-            ))}
+            ))} */}
         </Container>
     )
 }
