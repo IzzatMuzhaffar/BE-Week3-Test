@@ -45,7 +45,7 @@ export default function AuthPage() {
 
     return (
         <div>
-            <h1>User signup</h1>
+            <h1>User Signup</h1>
             <Form>
                 <Form.Group className='mb-3' controlId='form'>
                     <Form.Control onChange={(e) => setUsername(e.target.value)} type='email' placeholder='Enter email' value={username} />
